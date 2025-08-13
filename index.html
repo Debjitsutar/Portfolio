@@ -73,14 +73,76 @@
     .trow:nth-child(odd) .left{grid-column:1}.trow:nth-child(odd) .right{grid-column:2}
     .trow:nth-child(even) .left{grid-column:2}.trow:nth-child(even) .right{grid-column:1}
 
-    /* skills */
-    .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
-    .skill{margin:16px 0}
-    .skill h4{margin:0 0 8px;font-weight:700}
-    .bar{height:10px;background:#233050;border-radius:999px;overflow:hidden}
-    .bar > span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent-a),var(--accent-b));border-radius:999px;transition:width 1s ease}
-    .techs{display:grid;grid-template-columns:repeat(5, minmax(120px,1fr));gap:16px;margin-top:26px}
-    .tech{display:grid;place-items:center;background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:22px;color:#cfe0ff}
+    /* Skills Section */
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.skill {
+  margin: 16px 0;
+}
+
+.skill h4 {
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+
+.bar {
+  height: 10px;
+  background: #233050;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bar > span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent-a), var(--accent-b));
+  border-radius: 999px;
+  transition: width 1s ease;
+}
+
+.techs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  gap: 16px;
+  margin-top: 26px;
+}
+
+.tech {
+  display: grid;
+  place-items: center;
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, .06);
+  border-radius: 16px;
+  padding: 22px;
+  color: #cfe0ff;
+}
+
+/* 📱 Mobile responsiveness */
+@media (max-width: 768px) {
+  .skills-grid {
+    grid-template-columns: 1fr; /* Stack skills vertically */
+  }
+
+  .techs {
+    grid-template-columns: repeat(2, minmax(100px, 1fr)); /* Two columns on tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  .techs {
+    grid-template-columns: 1fr; /* Single column on small screens */
+  }
+
+  .tech {
+    padding: 16px; /* Less padding for smaller screens */
+  }
+}
+
 
     /* projects */
     .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -442,4 +504,5 @@
 </body>
 
 </html>
+
 
