@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio — Your Name</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1220;            /* deep navy */
+      --card:#151d2f;          /* elevated cards */
+      --muted:#9db0cf;         /* secondary text */
+      --text:#dfe8ff;          /* primary text */
+      --accent-a:#3ec7ff;      /* gradient start */
+      --accent-b:#7a40ff;      /* gradient end */
+      --ring: rgba(126, 119, 255, .35);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --maxw: 1180px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:radial-gradient(1400px 800px at 85% 10%,#101831,transparent),var(--bg);color:var(--text);}
+    img{display:block;max-width:100%;}
+    a{color:inherit;text-decoration:none}
+
+    /* util */
+    .container{max-width:var(--maxw);margin-inline:auto;padding:64px 20px}
+    .title{font-weight:800;letter-spacing:.3px;font-size:40px;margin:0 0 6px}
+    .title .accent{background:linear-gradient(90deg,var(--accent-a),var(--accent-b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .subtitle{opacity:.9;color:var(--muted);font-weight:500;margin:0 0 24px}
+    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.9rem 1.1rem;border-radius:999px;border:1px solid transparent;font-weight:600;box-shadow:var(--shadow);transition:.25s}
+    .btn.primary{background:linear-gradient(90deg,var(--accent-a),var(--accent-b));color:white}
+    .btn.ghost{background:transparent;border-color:#2a3550}
+    .btn:hover{transform:translateY(-2px);}
+    .pill{display:inline-flex;align-items:center;gap:.4rem;border:1px solid #2a3550;border-radius:999px;padding:.35rem .7rem;color:var(--muted);font-size:.85rem}
+
+    /* navbar */
+    .nav{position:sticky;top:0;z-index:50;background:rgba(10,16,30,.65);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.05)}
+    .nav-inner{max-width:var(--maxw);margin:auto;display:flex;align-items:center;justify-content:space-between;padding:14px 18px}
+    .brand{font-weight:800;font-size:22px}
+    .brand span{background:linear-gradient(90deg,var(--accent-a),var(--accent-b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .links{display:flex;gap:22px;align-items:center}
+    .links a{padding:8px 10px;border-radius:10px;color:var(--muted);font-weight:600}
+    .links a.active,.links a:hover{color:#fff;background:rgba(126,64,255,.12)}
+    .hamb{display:none;background:transparent;border:0;color:var(--text);font-size:24px}
+
+    /* hero */
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center}
+    .headline{font-size:56px;line-height:1.05;margin:6px 0 10px;font-weight:900}
+    .headline .name{background:linear-gradient(90deg,var(--accent-a),var(--accent-b));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .lead{color:#c7d6ff;opacity:.95;max-width:55ch}
+    .cta{display:flex;gap:14px;margin:28px 0 16px;flex-wrap:wrap}
+    .socials{display:flex;gap:12px;margin-top:8px}
+    .icon-btn{width:44px;height:44px;display:grid;place-items:center;border-radius:50%;border:1px solid #2a3550;background:#0f1629;transition:.2s}
+    .icon-btn:hover{border-color:transparent;box-shadow:0 0 0 6px var(--ring)}
+    .hero-portrait{justify-self:center;position:relative}
+    .portrait-wrap{aspect-ratio:1/1;width:330px;border-radius:50%;padding:10px;background:radial-gradient(120px 120px at 70% 20%,rgba(126,64,255,.35),transparent),linear-gradient(135deg,#1b2350,#0f1a33);box-shadow:0 18px 50px rgba(0,0,0,.45)}
+    .portrait-wrap img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+
+    /* about */
+    .about-grid{display:grid;grid-template-columns:280px 1fr;gap:30px;align-items:start}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+    .dl{display:grid;grid-template-columns:140px 1fr;row-gap:8px;column-gap:14px;color:#cfe0ff}
+
+    /* experience */
+    .timeline{position:relative;margin-top:20px}
+    .timeline:before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:#27314a}
+    .trow{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch;margin:24px 0}
+    .trow .card{min-height:160px}
+    .trow:nth-child(odd) .left{grid-column:1}.trow:nth-child(odd) .right{grid-column:2}
+    .trow:nth-child(even) .left{grid-column:2}.trow:nth-child(even) .right{grid-column:1}
+
+    /* skills */
+    .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+    .skill{margin:16px 0}
+    .skill h4{margin:0 0 8px;font-weight:700}
+    .bar{height:10px;background:#233050;border-radius:999px;overflow:hidden}
+    .bar > span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent-a),var(--accent-b));border-radius:999px;transition:width 1s ease}
+    .techs{display:grid;grid-template-columns:repeat(5, minmax(120px,1fr));gap:16px;margin-top:26px}
+    .tech{display:grid;place-items:center;background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:22px;color:#cfe0ff}
+
+    /* projects */
+    .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .project-card{display:flex;flex-direction:column;overflow:hidden}
+    .project-card .cover{height:180px;overflow:hidden;border-radius:16px}
+    .project-card .cover img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+    .project-card:hover .cover img{transform:scale(1.06)}
+    .project-card .body{padding:16px}
+    .badges{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+    .actions{display:flex;gap:12px;margin-top:6px}
+
+
+    /* footer */
+    .footer{padding:30px 20px;border-top:1px solid rgba(255,255,255,.06);text-align:center;color:var(--muted)}
+
+    /* scroll to top */
+    #toTop{position:fixed;right:18px;bottom:18px;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent-a),var(--accent-b));color:#fff;border:0;box-shadow:var(--shadow);opacity:0;visibility:hidden;transition:.25s}
+    #toTop.show{opacity:1;visibility:visible}
+
+    /* responsive */
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr;}
+      .about-grid{grid-template-columns:1fr}
+      .skills-grid{grid-template-columns:1fr}
+      .projects{grid-template-columns:1fr 1fr}
+      
+      .timeline:before{left:12px}
+      .trow{grid-template-columns:1fr;padding-left:26px}
+      .trow .left,.trow .right{grid-column:1}
+    }
+    @media (max-width: 720px){
+      .links{display:none}
+      .hamb{display:inline-flex}
+      .projects{grid-template-columns:1fr}
+      .headline{font-size:44px}
+      .portrait-wrap{width:280px}
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="#home" class="brand">Portfo<span>lio</span></a>
+      <nav class="links" id="navLinks">
+        <a href="#home" class="active">Home</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        
+      </nav>
+      <button class="hamb" id="hamb" aria-label="Open Menu">☰</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="home" class="container">
+    <div class="hero">
+      <div>
+        <p class="subtitle">Hi, I'm</p>
+        <h1 class="headline"><span class="name" id="cfgName">Your Name</span></h1>
+        <h3 class="subtitle" id="cfgRole">Frontend Developer</h3>
+        <p class="lead" id="cfgIntro">I build exceptional digital experiences that are fast, accessible, and visually appealing. Let's create something amazing together.</p>
+        <div class="cta">
+          <!-- <a class="btn primary" id="hireBtn" href="#contact">Hire Me</a> -->
+          <a class="btn ghost" href="#projects">View Work</a>
+        </div>
+        <div class="socials" id="socials">
+          <!-- social buttons injected by JS -->
+        </div>
+      </div>
+      <div class="hero-portrait">
+        <div class="portrait-wrap">
+          <img id="cfgAvatar" src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=800&auto=format&fit=crop" alt="Profile portrait"/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="container">
+    <h2 class="title">About <span class="accent">Me</span></h2>
+    <div class="about-grid">
+      <div class="card"><img id="aboutPic" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop" alt="About photo" style="border-radius:12px"></div>
+      <div>
+        <p style="color:#cfe0ff;max-width:70ch" id="aboutBio">I'm a passionate Full Stack Developer with experience creating modern web apps. I specialize in JavaScript and modern CSS frameworks.</p>
+        <div class="dl" id="aboutFacts">
+          <div>Name</div><div id="factName">Your Name</div>
+          <div>Email</div><div id="factEmail">you@example.com</div>
+          <div>Phone</div><div id="factPhone">+91 90000 00000</div>
+          <div>Age</div><div id="factAge">—</div>
+          <div>Experience</div><div id="factExp">—</div>
+          <div>Location</div><div id="factLoc">Your City, Country</div>
+        </div>
+        <div class="cta" style="margin-top:18px">
+          <a class="btn primary" id="cvBtn" download>Download CV</a>
+          
+        </div>
+      </div>
+    </div>
+
+    <h3 class="title" style="margin-top:48px">My <span class="accent">Internship</span></h3>
+    <div class="timeline" id="experience">
+      <!-- rows injected by JS -->
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="container">
+    <h2 class="title">My <span class="accent">Skills</span></h2>
+    <div class="skills-grid">
+      <div id="techSkills" class="card"></div>
+      <div id="proSkills" class="card"></div>
+    </div>
+    <h3 class="title" style="margin-top:28px">Tools & <span class="accent">Technologies</span></h3>
+    <div class="techs" id="tools"></div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="container">
+    <h2 class="title">My <span class="accent">Projects</span></h2>
+    <div class="projects" id="projectGrid"></div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="container">
+    <h2 class="title">Get In <span class="accent">Touch</span></h2>
+    <div class="contact-grid">
+      <div class="card">
+        <p class="subtitle">Feel free to reach out for any questions or opportunities.</p>
+        <p><strong>Location:</strong> <span id="cLoc">Your City, Country</span></p>
+        <p><strong>Email:</strong> <a id="cEmail" href="mailto:you@example.com">you@example.com</a></p>
+        <p><strong>Phone:</strong> <span id="cPhone">+91 90000 00000</span></p>
+        <div id="contactSocials" class="socials" style="margin-top:12px"></div>
+      </div>
+      
+    </div>
+  </section>
+
+  <button id="toTop" aria-label="Back to top">▲</button>
+  <footer class="footer">© <span id="year"></span> <span id="footName">Your Name</span>. All rights reserved.</footer>
+
+  <script>
+  // ======== QUICK CONFIG: Put YOUR data here (or keep placeholders) ========
+  const CONFIG = {
+    name: "Debjit Sutar",                   // Your name
+    role: "Frontend Developer",
+    intro: "I craft fast, accessible and delightful web apps using modern JavaScript, and clean CSS.",
+    avatar: "./Debjit_Img.jpg",
+    aboutPic: "./Debjit_Img.jpg",
+
+    bio: "I'm a developer focused on building performant UIs and scalable frontends. I enjoy TypeScript, , and design systems.",
+    email: "debjitsutar65@gmail.com.com",
+    phone: "+91 6290935080",
+    age: "22",
+    experience: "0 Years",
+    location: "India",
+    cvFileUrl: "./CV.pdf", // optional CV link
+    socials: [
+      {label:"GitHub", url:"https://github.com/Debjitsutar?tab=repositories", svg:`<svg width='20' height='20' viewBox='0 0 24 24' fill='currentColor'><path d='M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.18-3.37-1.18-.46-1.16-1.12-1.47-1.12-1.47-.92-.63.07-.62.07-.62 1.02.07 1.56 1.05 1.56 1.05 .9 1.54 2.36 1.1 2.94.84 .09-.66.35-1.1.63-1.35-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .85-.27 2.78 1.02A9.6 9.6 0 0 1 12 6.8c.86 0 1.73.12 2.54.35 1.93-1.29 2.78-1.02 2.78-1.02 .55 1.38.2 2.4.1 2.65 .64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93 .36.31.68.92.68 1.86v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2z'/></svg>`},
+      {label:"LinkedIn", url:"https://www.linkedin.com/in/debjit-sutar-65a97a31b/", svg:`<svg width='20' height='20' viewBox='0 0 24 24' fill='currentColor'><path d='M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8.98h5V24H0V8.98zM8.34 8.98H13v2.05h.07c.65-1.23 2.24-2.53 4.62-2.53C22.6 8.5 24 11.02 24 15.07V24h-5v-8.23c0-1.96-.04-4.49-2.73-4.49-2.74 0-3.16 2.14-3.16 4.35V24H8.34V8.98z'/></svg>`},
+      {label:"GeeksforGeeks", url:"https://www.geeksforgeeks.org/user/debjitsz2vu/", svg:`<svg width='20' height='20' viewBox='0 0 24 24' fill='currentColor'><circle cx='12' cy='12' r='10' stroke='currentColor' stroke-width='2' fill='none'/><text x='50%' y='55%' text-anchor='middle' font-size='10' fill='currentColor' font-family='sans-serif'>GFG</text></svg>`},
+      {label:"LeetCode", url:"https://leetcode.com/progress/", svg:`<svg width='20' height='20' viewBox='0 0 24 24' fill='currentColor'><path d='M17.5 3.5c-1.95 0-3.73.78-5.03 2.05l-7.35 7.34a.996.996 0 1 0 1.41 1.41l7.34-7.34a5.008 5.008 0 0 1 7.09 7.09l-3.18 3.18a.996.996 0 1 0 1.41 1.41l3.18-3.18a7.002 7.002 0 0 0-4.87-11.96z'/></svg>`}
+
+    ],
+    techSkills: [
+      {name:"HTML/CSS", value:95},
+      {name:"JavaScript", value:90},
+      {name:"Power Bi", value:85},
+    ],
+    proSkills: [
+      {name:"Communication", value:90},
+      {name:"Teamwork", value:85},
+      {name:"Problem Solving", value:95},
+      {name:"Creativity", value:75},
+    ],
+    tools: ["HTML5","CSS3","JavaScript","Power Bi","Git","GitHub","VS Code","MySQL","Bootstrap"],
+    experienceItems: [
+  {
+    side: "right",
+    title: "Power BI Intern",
+    org: "Classroom Tech",
+    period: "1 Apr 2025 — 30 Jun 2025",
+    desc: "Worked on Blinkit Sales Data Analysis using Power BI. Created interactive dashboards, performed data cleaning, and derived business insights from sales datasets."
+  }
+],
+
+    projects: [
+      { 
+  title: "Algo Track", 
+  cover: "./Dashboard.jpg", 
+  desc: "A coding question tracker with topic-wise and difficulty-wise progress tracking.", 
+  stack: ["JavaScript", "HTML", "CSS"], 
+  demo: "https://debjitsutar.github.io/Algo_Track/", 
+  code: "https://github.com/Debjitsutar/Algo_Track" 
+},
+{ 
+  title: "Power BI Sales Dashboard", 
+  cover: "./Power-Bi.png", 
+  desc: "Interactive Blinkit Sales Data Analysis dashboard built in Power BI, showcasing KPIs, trends, and insights.", 
+  stack: ["Power BI"], 
+  code: "https://github.com/Debjitsutar/blinkit-powerbi-project" // only GitHub link
+},
+{ 
+  title: "Portfolio Website", 
+  cover: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1600&auto=format&fit=crop", 
+  desc: "A fast, accessible personal portfolio with modern animations.", 
+  stack: ["HTML", "CSS", "JavaScript"], 
+  demo: "#", 
+  code: "https://github.com/Debjitsutar/Portfolio" 
+}
+
+    ]
+  };
+
+  // ======== Helper Rendering ========
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
+
+  function injectSocials(containerId){
+    const wrap = document.getElementById(containerId) || document.getElementById('socials');
+    wrap.innerHTML = CONFIG.socials.map(s => `<a class="icon-btn" href="${s.url}" target="_blank" rel="noopener" aria-label="${s.label}">${s.svg}</a>`).join("");
+  }
+
+  function renderExperience(){
+    const host = document.getElementById('experience');
+    host.innerHTML = CONFIG.experienceItems.map((item,i)=>{
+      return `<div class='trow'>
+        <div class='left'></div>
+        <div class='right'></div>
+      </div>`
+    }).join("");
+    // Fill cards alternating
+    $$('#experience .trow').forEach((row,idx)=>{
+      const item = CONFIG.experienceItems[idx];
+      const card = `<div class='card'><h3 style='margin:0 0 6px'>${item.title}</h3>
+        <div class='subtitle' style='margin:0 0 8px'>${item.org} • ${item.period}</div>
+        <p style='margin:0;color:#cfe0ff'>${item.desc}</p></div>`;
+      row.querySelector(item.side === 'left' ? '.left' : '.right').innerHTML = card;
+    });
+  }
+
+  function renderSkills(){
+    const mk = (arr)=>arr.map(s=>`<div class='skill'><h4>${s.name} <span style='float:right;color:#a9bbdf'>${s.value}%</span></h4><div class='bar'><span style='width:${s.value}%'></span></div></div>`).join("");
+    $('#techSkills').innerHTML = `<h3 style='margin-top:0'>Technical Skills</h3>${mk(CONFIG.techSkills)}`;
+    $('#proSkills').innerHTML = `<h3 style='margin-top:0'>Professional Skills</h3>${mk(CONFIG.proSkills)}`;
+  }
+
+  function renderTools(){
+    $('#tools').innerHTML = CONFIG.tools.map(t=>`<div class='tech'>${t}</div>`).join('');
+  }
+
+  function renderProjects() {
+  const grid = $('#projectGrid');
+  grid.innerHTML = CONFIG.projects.map(p => `
+    <article class='project-card card'>
+      <div class='cover'><img src='${p.cover}' alt='${p.title} cover'></div>
+      <div class='body'>
+        <h3 style='margin:0 0 8px'>${p.title}</h3>
+        <p style='color:#cfe0ff;margin:0 0 10px'>${p.desc}</p>
+        <div class='badges'>${p.stack.map(s => `<span class='pill'>${s}</span>`).join('')}</div>
+        <div class='actions'>
+          ${p.demo ? `<a class='btn ghost' href='${p.demo}' target='_blank' rel='noopener'>Live Demo</a>` : ''}
+          <a class='btn ghost' href='${p.code}' target='_blank' rel='noopener'>Code</a>
+        </div>
+      </div>
+    </article>`).join('');
+}
+
+
+  // ======== Interactions ========
+  function setActiveLink(){
+    const sections = ['home','about','skills','projects','contact'];
+    const fromTop = window.scrollY + 100;
+    sections.forEach(id=>{
+      const sec = document.getElementById(id);
+      const link = $(`.links a[href="#${id}"]`);
+      if(!sec || !link) return;
+      const top = sec.offsetTop; const bottom = top + sec.offsetHeight;
+      if(fromTop >= top && fromTop < bottom){link.classList.add('active')} else {link.classList.remove('active')}
+    });
+  }
+
+  // Animate skill bars when visible
+  function animateSkills(){
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.querySelectorAll('.bar > span').forEach(el=>{
+            el.style.width = el.style.width; // already set; triggers CSS transition on mount
+          });
+          observer.unobserve(e.target);
+        }
+      })
+    },{threshold:.25});
+    observer.observe($('#skills'));
+  }
+
+  
+
+  function setupMobileNav(){
+    const hamb = $('#hamb');
+    hamb.addEventListener('click', ()=>{
+      const nav = $('#navLinks');
+      const isOpen = getComputedStyle(nav).display !== 'none';
+      nav.style.display = isOpen ? 'none' : 'flex';
+    });
+  }
+
+  function setupTopBtn(){
+    const btn = $('#toTop');
+    window.addEventListener('scroll',()=>{
+      setActiveLink();
+      if(window.scrollY > 600) btn.classList.add('show'); else btn.classList.remove('show');
+    });
+    btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+  }
+
+  // ======== Init with CONFIG ========
+  function init(){
+    // Texts
+    $('#cfgName').textContent = CONFIG.name || 'Your Name';
+    $('#footName').textContent = CONFIG.name || 'Your Name';
+    $('#cfgRole').textContent = CONFIG.role;
+    $('#cfgIntro').textContent = CONFIG.intro;
+    $('#cfgAvatar').src = CONFIG.avatar;
+    $('#aboutPic').src = CONFIG.aboutPic;
+    $('#aboutBio').textContent = CONFIG.bio;
+    $('#factName').textContent = CONFIG.name;
+    $('#factEmail').textContent = CONFIG.email;
+    $('#factPhone').textContent = CONFIG.phone;
+    $('#factAge').textContent = CONFIG.age || '—';
+    $('#factExp').textContent = CONFIG.experience;
+    $('#factLoc').textContent = CONFIG.location;
+    $('#cLoc').textContent = CONFIG.location;
+    $('#cEmail').textContent = CONFIG.email; $('#cEmail').href = `mailto:${CONFIG.email}`;
+    $('#cPhone').textContent = CONFIG.phone;
+    if(CONFIG.cvFileUrl){
+      $('#cvBtn').href = CONFIG.cvFileUrl; $('#cvBtn').setAttribute('download','');
+    } else { $('#cvBtn').textContent = 'Request CV'; $('#cvBtn').href = '#contact'; }
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    injectSocials('socials');
+    injectSocials('contactSocials');
+    renderExperience();
+    renderSkills();
+    renderTools();
+    renderProjects();
+    animateSkills();
+
+    setupForm();
+    setupMobileNav();
+    setupTopBtn();
+    setActiveLink();
+  }
+
+  init();
+  </script>
+</body>
+</html>
